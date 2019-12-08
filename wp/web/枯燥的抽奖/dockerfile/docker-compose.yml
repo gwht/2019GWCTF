@@ -1,0 +1,6 @@
+services:
+  web11:
+    build: .
+    ports:
+    - 2345:80
+version: '3'

@@ -1,0 +1,17 @@
+FROM ubuntu:latest
+
+RUN sed -i "s/http:\/\/archive.ubuntu.com/http:\/\/mirrors.aliyun.com/g" /etc/apt/sources.list
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+        apt-get install -y apache2 libapache2-mod-php php
+
+COPY ./source /var/www/html
+RUN chmod -R 444 /var/www/html
+
+RUN service apache2 start
+
+CMD service apache2 start &&  tail -f /dev/null
+
+EXPOSE 80
