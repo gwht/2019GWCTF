@@ -1,0 +1,35 @@
+version: '2.4'
+services:
+  bot:
+    build: ./bot
+    ports:
+      - "127.0.0.1:12450:80"
+    networks:
+      testing_net:
+        ipv4_address: 172.30.1.10
+    extra_hosts:
+      - "password.gwht.io:172.30.1.80"
+  phantomjs:
+    image: wernight/phantomjs
+    ports:
+      - "8910:8910"
+    restart: always
+    command: phantomjs --webdriver=8910
+    networks:
+      testing_net:
+        ipv4_address: 172.30.1.33
+    extra_hosts:
+      - "password.gwht.io:172.30.1.80"
+  app:
+    build: ./app
+    ports:
+      - "8127:80"
+    networks:
+      testing_net:
+        ipv4_address: 172.30.1.80
+networks:
+    testing_net:
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.30.0.0/16
